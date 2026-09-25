@@ -534,6 +534,11 @@ while running:
         # Результаты партии
 
         end_time = datetime.now()
+        game_stats = {
+            "all_win": 0, "all_game": 0,
+            "classic_game": 0, "classic_win": 0, "classic_easy_game": 0, "classic_easy_win": 0, "classic_normal_game": 0, "classic_normal_win": 0,
+            "flip_game": 0, "flip_win": 0, "flip_easy_game": 0, "flip_easy_win": 0, "flip_normal_game": 0, "flip_normal_win": 0
+        }
         if gamemode=="classic":     # Подсчёт для UNO Classic
             if len(player_pul.get_pul()) == 0:      # Победа игрока
                 game_result = "Победа"
@@ -542,6 +547,9 @@ while running:
                 session_stats["classic_win"] += 1
                 session_stats["all_win"] += 1
                 session_stats[f"classic_{difficult}_win"] += 1
+                game_stats["classic_win"] += 1
+                game_stats["all_win"] += 1
+                game_stats[f"classic_{difficult}_win"] += 1
             elif len(opponent_pul.get_pul()) == 0:       # Победа противника
                 game_result = "Поражение"
                 print("Ваши оставшиеся карты:", player_pul)
@@ -556,6 +564,9 @@ while running:
             session_stats["classic_game"] += 1
             session_stats["all_game"] += 1
             session_stats[f"classic_{difficult}_game"] += 1
+            game_stats["classic_game"] += 1
+            game_stats["all_game"] += 1
+            game_stats[f"classic_{difficult}_game"] += 1
         elif gamemode == "flip":      # Подсчёт для UNO Flip
             if len(player_light_pul.get_pul()) == 0:   # Победа игрока
                 game_result = "Победа"
@@ -565,6 +576,9 @@ while running:
                 session_stats["flip_win"] += 1
                 session_stats["all_win"] += 1
                 session_stats[f"flip_{difficult}_win"] += 1
+                game_stats["flip_win"] += 1
+                game_stats["all_win"] += 1
+                game_stats[f"flip_{difficult}_win"] += 1
             elif len(opponent_light_pul.get_pul()) == 0:     # Победа противника
                 game_result = "Поражение"
                 print("Ваши оставшиеся карты (светлые):", player_light_pul)
@@ -580,6 +594,9 @@ while running:
             session_stats["flip_game"] += 1
             session_stats["all_game"] += 1
             session_stats[f"flip_{difficult}_game"] += 1
+            game_stats["flip_game"] += 1
+            game_stats["all_game"] += 1
+            game_stats[f"flip_{difficult}_game"] += 1
         print("")
         print(f"Длительность игры: {(end_time - start_time).seconds // 60} мин. {(end_time - start_time).seconds % 60} сек.")
         print("")
@@ -604,7 +621,7 @@ while running:
 
             stats = data["stats"]
             for key in stats.keys():
-                stats[key] += session_stats[key]
+                stats[key] += game_stats[key]
             data["stats"] = stats
 
             replays = data["replays"]
