@@ -348,7 +348,6 @@ while running:
                                 opponent_dark_pul.add(int(player_card.value[1]), dark_cards)
                             elif difficult == "normal":
                                 buff_sum += int(player_card.value[1])
-                                print("DEBUG перед штрафом:", buff_sum)
                         elif player_card.value == "wild draw color":
                             opponent_light_pul.add(opponent_dark_pul.extra_add(player_card.color, dark_cards), light_cards)
                         if player_card.value == "flip":
@@ -481,7 +480,7 @@ while running:
                             opponent_card.select_color("opponent", side, max(color_count_pul, key = color_count_pul.get))
                         if opponent_card.value in ("+1", "+2 wild card", "+5"):
                             if difficult == "easy":
-                                player_light_pul.add(int(opponent_card.value[1]))
+                                player_light_pul.add(int(opponent_card.value[1]), light_cards, True)
                             elif difficult == "normal":
                                 buff_sum += int(opponent_card.value[1])
                         if opponent_card.value == "flip":
@@ -504,9 +503,6 @@ while running:
                         else:
                             print("Ход противника: ", end="")
 
-                        if opponent_card.value == "wild draw color":
-                            player_light_pul.add(player_dark_pul.extra_add(opponent_card.color, dark_cards, True), light_cards)
-
                         opponent_light_pul.pop(opponent_index)
                         opponent_dark_pul.pop(opponent_index)
                         last_card = opponent_card
@@ -521,6 +517,8 @@ while running:
                             print(f"{opponent_card} x{card_sum}")
                         else:
                             print(opponent_card)
+                        if opponent_card.value == "wild draw color":
+                            player_light_pul.add(player_dark_pul.extra_add(opponent_card.color, dark_cards, True), light_cards)
                     elif not choose:
                         opponent_try = True
                         print("Ход противника: +")
